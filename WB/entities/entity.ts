@@ -2,22 +2,22 @@ import { v4 as uuidv4 } from 'uuid';
 
 export enum EEntityType {
     // IMPORTANT
-    LIVING, // and dead
+    LIVING = 'Living', // and dead
     /** LIVING THINGS 
      * includes 
     */
 
-    BUILDING, // a house
-    STATIC, // a wall, a waterfall
+    BUILDING = 'Building', // a house
+    STATIC = 'Static', // a wall, a waterfall
 
-    MOVABLE, // a rock, a tree branch
-    PROP, // a slingshot 
+    MOVABLE = 'Movable', // a rock, a tree branch
+    PROP = 'Prop', // a slingshot 
 
-    EMPTY, // debug
-    VOID, // never ending story    
+    EMPTY = 'Empty', // debug
+    VOID = 'Void', // never ending story    
 
 }
-export type TEntityType {
+export type TEntityType = {
     // Add your entity types here
     type: EEntityType;
     metadata: any;
