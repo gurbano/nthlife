@@ -1,13 +1,20 @@
 import { Entity, IEntity, TEntityType, EEntityType } from "../entity";
 
+export enum EKingdom {
+    Animalia = "Animalia",
+    Plantae = "Plantae",
+    Fungi = "Fungi",
+}
 export interface ILivingEntity extends IEntity {
-    type: TEntityType
+    kingdom: EKingdom
 }
 
-export class LivingEntity extends Entity implements ILivingEntity {
-    type: TEntityType;
 
-    constructor() {
+export class LivingEntity extends Entity implements ILivingEntity {
+    kingdom: EKingdom;
+
+    constructor({kingdom=EKingdom.Animalia}: {kingdom: EKingdom}) {
         super({type: EEntityType.LIVING, metadata:{}});
+        this.kingdom = kingdom;
     }
 }

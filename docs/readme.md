@@ -30,10 +30,12 @@ white beard creator module
 ```
     // Hourglass
       // start, stop, reverse etc. etc
+      // onSand
 
     //
     const hourglass: Hourglass = WB.
         .time() // return HourglassCreator
+        .onEarth(world)
             ...
         .goesby(); // return Hourglass
 
@@ -41,6 +43,9 @@ white beard creator module
 ###  Planets
 ```
     // World
+
+    // getEntity({...});
+    // getEntities({...});
 
     const world: World = WB
         .spark() // return WorldCreator
@@ -52,23 +57,23 @@ white beard creator module
         .ignite(seed); // return world
 
 ```
-### Mould world
+### Forge world
 ```
-    const mould: Mould = WB
-        .mould(world)
+    const forge: Forge = WB
+        .forge(world) // return MouldCreator
             .withSize() // required
             .?withRules({...}) // phy
             .?withMods([...]) // mods    
             ...
-        .bake(); // init
-    
-    // modify
-    
-    mould,addMountains({....})
-    mould.addTrees({...})
+        .create(); // return Forge
+
+    // modify    
+    mould.addMountains({....})
     mould.addSee({...})
     mould.addBiomes({...})
     ....
+
+    mould.addTrees({...})
 
 ```
 

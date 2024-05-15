@@ -18,5 +18,8 @@
   "homepage": "https://github.com/gurbano/nthlife#readme",
   "dependencies": {
     "uuid": "^9.0.1"
+  },
+  "devDependencies": {
+    "@types/uuid": "^9.0.8"
   }
 }
