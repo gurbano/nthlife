@@ -1,5 +1,6 @@
-import { ENeed, EResource, EAct, ERequirement, Amount, TAction, callback, Acts } from "./acts";
-type TStrategy = {
+import { Entity } from "../../entities/entity";
+import { ENeed, EResource, EAct, ERequirement, Amount,  callback, Acts } from "./acts";
+export type TStrategy = {
     name: string;
     for: Array<ENeed | EResource | EAct> | ENeed | EResource | EAct;
     requires: Amount<EResource>[];
@@ -8,7 +9,10 @@ type TStrategy = {
     onCompletion?: callback;
     onFail?: callback;
 }
-
+export type TAction = { 
+    act: EAct, 
+    what?: EResource | ERequirement
+}  
 
 
 class FullBrain {
@@ -64,7 +68,26 @@ class BrainController {
         }
         for (const strategy of availableStrategies) {
             // this.executeStrategy(strategy);
+            console.log("Strategy found ", strategy);
         }
         
     }
 }
+
+export interface IHaveBrain  {
+    think: () => void;
+    brainConfig?: any;
+}
+
+export const hasBrain = (config: any) => <T extends Entity>(entity: T): T & IHaveBrain => {
+    const brainController = new BrainController(new FullBrain());
+    const needs: Array<ENeed> = [ENeed.FOOD, ENeed.WATER, ENeed.SHELTER, ENeed.MATE];
+    const newEntity = entity as T & IHaveBrain;
+    newEntity.brainConfig = config;
+    newEntity.think = ()=> {
+        console.log(`${entity.id} hasBrain`, newEntity.brainConfig);
+        needs.length > 0 && brainController.resolveNeed(needs.pop()!);
+    }
+    return newEntity;
+}
+export default hasBrain;

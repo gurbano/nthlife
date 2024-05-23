@@ -1,3 +1,6 @@
+import { randomUUID } from "crypto";
+import { IEntity } from "./entities/entity";
+
 class WhiteBeard {
     public spark(): WorldBuilder {
         return new WorldBuilder();
@@ -35,15 +38,20 @@ class Terrain {
     }
 }
 class World {
-    private uuid: string = Math.random().toString();
-    private universe: Universe;
-    private terrain: Terrain;
-    constructor({ universe }: { universe: Universe }) {
+    public uuid: string;
+    universe: Universe;
+    terrain: Terrain;
+    entities: Map<String, IEntity> = new Map();
+    constructor({ universe, uuid}: { universe: Universe, uuid?: string}) {
         this.universe = universe;
+        this.uuid = uuid || randomUUID();
         this.terrain = new Terrain({ size: [0, 0, 0] });
     }
     public tabula(): Terrain {
         return this.terrain;
+    }
+    public addEntity(entity: IEntity) {
+        this.entities.set(entity.id, entity);
     }
 }
 class Forge {
@@ -64,7 +72,6 @@ class Hourglass {
     }
 
     public flip(): void { // start
-        console.log('flip');
         this.isRunning = true;
         this.tick();
     }
@@ -79,6 +86,11 @@ class Hourglass {
     private tick(): void {
         if (!this.isRunning) return;
         this.callback && this.callback();
+
+        this.world.entities.forEach((entity) => {
+            console.log('entity', entity.id);
+        });
+        
         setTimeout(this.tick.bind(this), 60);
     }
 
@@ -106,16 +118,27 @@ class UniverseBuilder {
     }
 }
 class WorldBuilder {
+    private world: World;
+    
     private universe: Universe;
+    private id: string;
+    
     
     constructor() {
         this.universe = new Universe();
+        this.id = randomUUID().toString();
     }
 
     public ignite(): World {
-        return new World({ 
+         this.world = new World({ 
             universe: this.universe,
+            uuid: this.id
         });
+        return this.world;
+    }
+    public withId(id: string): WorldBuilder {
+        this.id = id;
+        return this;
     }
     public withinUniverse(universe?: Universe): WorldBuilder {
         this.universe = universe || this.universe || new Universe();
@@ -158,4 +181,4 @@ class ForgeBuilder {
     }
 }
 
-export { WhiteBeard };
+export { WhiteBeard, World };

@@ -1,25 +1,48 @@
 {
+  "author": "YOU <YOU@example.com>",
   "name": "nthlife",
-  "version": "0.1.0",
   "description": "second life for animals",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "version": "0.1.0",
+  "engines": {
+    "node": ">=8.0.0"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/gurbano/nthlife.git"
-  },
-  "author": "gurbano",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/gurbano/nthlife/issues"
-  },
-  "homepage": "https://github.com/gurbano/nthlife#readme",
   "dependencies": {
-    "uuid": "^9.0.1"
+    "actionhero": "29.3.0",
+    "ioredis": "latest",
+    "ioredis-mock": "latest",
+    "uuid": "^9.0.1",
+    "winston": "latest",
+    "ws": "latest"
   },
   "devDependencies": {
-    "@types/uuid": "^9.0.8"
+    "@types/formidable": "^3.4.5",
+    "@types/glob": "latest",
+    "@types/jest": "latest",
+    "@types/node": "latest",
+    "@types/uuid": "^9.0.8",
+    "jest": "latest",
+    "prettier": "latest",
+    "ts-jest": "latest",
+    "ts-node-dev": "latest",
+    "type-fest": "latest",
+    "typescript": "latest"
+  },
+  "scripts": {
+    "postinstall": "npm run build",
+    "dev": "ts-node-dev --no-deps --transpile-only ./src/server",
+    "debug": "tsc && ts-node-dev --transpile-only --no-deps --inspect -- ./src/server ",
+    "start": "node ./dist/server.js",
+    "actionhero": "actionhero",
+    "test": "jest",
+    "pretest": "npm run build && npm run lint",
+    "build": "tsc --sourceMap false --declaration",
+    "lint": "prettier --check src/*/** __tests__/*/**",
+    "pretty": "prettier --write src/*/** __tests__/*/**"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "transform": {
+      "^.+\\.ts?$": "ts-jest"
+    }
   }
 }

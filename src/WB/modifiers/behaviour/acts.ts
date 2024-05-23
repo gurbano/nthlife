@@ -1,6 +1,10 @@
+import { TStrategy } from "./behaviour";
+
 export enum ENeed {
     FOOD = "FOOD",
-    WATER = "WATER"
+    WATER = "WATER",
+    SHELTER = "SHELTER",
+    MATE = "MATE"
 }
 
 export enum ERequirement {
@@ -42,13 +46,9 @@ export type Amount<T> = {
     unit: T;
 }
 export type callback = ({}) => void;
-export type TAction = { 
-    act: EAct, 
-    what?: EResource | ERequirement
-}  
 
 
-const EatFood = {
+const EatFood: TStrategy = {
     name: "Eat food",
     for: ENeed.FOOD,
     requires: [{ amount: 1, unit: EResource.FOOD }],
@@ -57,7 +57,7 @@ const EatFood = {
     ]
 }
 
-const FindFood =  {
+const FindFood: TStrategy =  {
     name: "Find food",
     for: ENeed.FOOD,
     requires: [],
@@ -68,7 +68,7 @@ const FindFood =  {
 };
 
 
-const Forage = {
+const Forage: TStrategy = {
     name: "Forage",
     for: EResource.FOOD,
     requires: [],
@@ -77,7 +77,7 @@ const Forage = {
         { act: EAct.CONVERT, what: EResource.PLANT}
     ]
 };
-const Scavenge = {
+const Scavenge: TStrategy = {
     name: "Scavenge",
     for: EResource.FOOD,
     requires: [],
@@ -86,7 +86,7 @@ const Scavenge = {
         { act: EAct.CONVERT, what: EResource.BODY}
     ]
 };
-const Hunt = {
+const Hunt: TStrategy = {
     name: "Hunt",
     for: EResource.FOOD,
     requires: [],
@@ -96,7 +96,7 @@ const Hunt = {
     ]
 };
 
-const FindSomething = {
+const FindSomething: TStrategy = {
     name: "Find something",
     for: EResource.GENERIC_RESOURCE,
     requires: [],
@@ -104,7 +104,7 @@ const FindSomething = {
         { act: EAct.SEARCH, what: EResource.GENERIC_RESOURCE},
     ]
 };
-const FindSomewhere = {
+const FindSomewhere: TStrategy = {
     name: "Find somewhere",
     for: EResource.GENERIC_POI,
     requires: [],
@@ -112,7 +112,7 @@ const FindSomewhere = {
         { act: EAct.SEARCH, what: EResource.GENERIC_POI},
     ]
 };
-const FindSomeone = {
+const FindSomeone: TStrategy = {
     name: "Find someone",
     for: EResource.GENERIC_CREATURE,
     requires: [],
@@ -121,7 +121,7 @@ const FindSomeone = {
     ]
 };
 
-const BaseHunt = {
+const BaseHunt: TStrategy = {
     name: "Base Hunt",
     for: EResource.FOOD,
     requires: [],
@@ -131,7 +131,7 @@ const BaseHunt = {
     ]
 }
 
-const NightHunt = {
+const NightHunt: TStrategy = {
     name: "Night Hunt",
     for: EResource.FOOD,
     requires: [],
@@ -145,7 +145,7 @@ const NightHunt = {
 }
 
 
-const Search = {
+const Search: TStrategy = {
     name: "Search",
     for: EResource.ANYTHING,
     requires: [],
@@ -157,7 +157,7 @@ const Search = {
     ],
 };
 
-const MeleeCombat = {
+const MeleeCombat: TStrategy = {
     name: "Melee Fight",
     for: EResource.ANYTHING,
     requires: [],
@@ -165,7 +165,7 @@ const MeleeCombat = {
         { act: EAct.MELEE_COMBAT, what: EResource.ANYTHING}
     ]
 }
-const RangedCombat = {
+const RangedCombat: TStrategy = {
     name: "Ranged Fight",
     for: EResource.ANYTHING,
     requires: [],
@@ -175,7 +175,7 @@ const RangedCombat = {
 }
 
 
-const Consume = {
+const Consume: TStrategy = {
     name: "Consume",
     for: ENeed.FOOD,
     requires: [{ amount: 1, unit: EResource.FOOD }],
@@ -184,7 +184,7 @@ const Consume = {
         console.log("Consumed");
     }
 };
-const ConvertToFood = {
+const ConvertToFood: TStrategy = {
     name: "Convert resource to food",
     for: ENeed.FOOD,
     requires: [{ amount: 1, unit: EResource.GENERIC_RESOURCE }],
