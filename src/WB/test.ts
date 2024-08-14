@@ -35,9 +35,9 @@ export function testWB() {
 
 // ANIMALS
 
-//     const aCat: Carnivora = new Carnivora();
-//     aCat.id = 'cat';
-//     aCat.move();
+    const aCat: Carnivora = new Carnivora();
+    aCat.id = 'cat';
+    aCat.move();
 
 //     const aWhale: Cetacea = new Cetacea();
 //     aWhale.id = 'whale';

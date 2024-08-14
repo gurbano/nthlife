@@ -25,7 +25,7 @@ export class Aves extends Chordata implements IAves {
     order: EOrderAves;
 
     constructor({order}: {order: EOrderAves}) {
-        super({clazz: EClassChordata.Aves});
+        super({classe: EClassChordata.Aves});
         this.order =  order;
         return canMove(DefaultTMoveConfig.defaultAirAnimal)(this);
     }

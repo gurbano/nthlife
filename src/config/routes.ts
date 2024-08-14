@@ -12,10 +12,12 @@ export const DEFAULT: { [namespace]: () => RoutesConfig } = {
   [namespace]: () => {
     return {
       get: [
-        { path: "/status", action: "status" },
+        // { path: "/status", action: "status" },
         { path: "/swagger", action: "swagger" },
-        { path: "/createChatRoom", action: "createChatRoom" },
+        // { path: "/createChatRoom", action: "createChatRoom" },
         { path: "/game", action: "getGame" },
+        { path: "/animal", action: "createAnimal" },
+        { path: "/startWorld", action: "startWorld" },
       ],
 
       /* ---------------------

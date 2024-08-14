@@ -17,4 +17,8 @@ export class LivingEntity extends Entity implements ILivingEntity {
         super({type: EEntityType.LIVING, metadata:{}});
         this.kingdom = kingdom;
     }
+    public tick(): void {
+        super.tick();
+        console.log('asLivingEntity (%s)', this.id);
+    }
 }

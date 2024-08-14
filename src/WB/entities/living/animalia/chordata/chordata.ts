@@ -16,8 +16,8 @@ export interface IChordata extends IAnimalia {
 export class Chordata extends Animalia implements IChordata {
     class: EClassChordata;
     
-    constructor({clazz}: {clazz: EClassChordata}) {
+    constructor({classe}: {classe: EClassChordata}) {
         super({phylum: EPhylum.Chordata});
-        this.class = clazz;
+        this.class = classe;
     }
 }

@@ -1,5 +1,8 @@
 import { randomUUID } from "crypto";
-import { IEntity } from "./entities/entity";
+import { Entity, EntityClass, IEntity } from "./entities/entity";
+const ESSerializer = require('esserializer');
+import { LivingEntity } from "./entities/living/living";
+import { Aves } from "./entities/living/animalia/chordata/aves/aves";
 
 class WhiteBeard {
     public spark(): WorldBuilder {
@@ -25,33 +28,102 @@ class Universe {
         this.rules = rules || [];
         this.mods = mods || [];
     }
+
+    // Method to convert class instance to plain object
+    public toJSON() {
+        return {
+            uuid: this.uuid,
+            rules: this.rules,
+            mods: this.mods
+        };
+    }
+
+    // Static method to create a class instance from a plain object
+    public static fromJSON(json: any): Universe {
+        const universe = new Universe({ rules: json.rules, mods: json.mods });
+        universe.uuid = json.uuid;
+        return universe;
+    }
 }
 class Terrain {
     private uuid: string = Math.random().toString();
     private size: [number, number, number];
+
     constructor({ size }: { size: [number, number, number] }) {
         this.size = size;
     }
+
     public rasa({ size }: { size: [number, number, number] }): Terrain {
         this.size = size;
         return this;
+    }
+
+    // Method to convert class instance to plain object
+    public toJSON() {
+        return {
+            uuid: this.uuid,
+            size: this.size
+        };
+    }
+
+    // Static method to create a class instance from a plain object
+    public static fromJSON(json: any): Terrain {
+        const terrain = new Terrain({ size: json.size });
+        terrain.uuid = json.uuid;
+        return terrain;
     }
 }
 class World {
     public uuid: string;
     universe: Universe;
     terrain: Terrain;
-    entities: Map<String, IEntity> = new Map();
-    constructor({ universe, uuid}: { universe: Universe, uuid?: string}) {
+    hourglass: Hourglass;
+    entities: Map<string, IEntity> = new Map();
+
+    constructor({ universe, uuid }: { universe: Universe, uuid?: string }) {
         this.universe = universe;
         this.uuid = uuid || randomUUID();
         this.terrain = new Terrain({ size: [0, 0, 0] });
     }
+
     public tabula(): Terrain {
         return this.terrain;
     }
+
+    public time(hourglass?: Hourglass): Hourglass {
+        if(!!hourglass) {
+            this.hourglass = hourglass;
+        }
+        return this.hourglass;
+    }
+
     public addEntity(entity: IEntity) {
         this.entities.set(entity.id, entity);
+    }
+
+    // Method to convert class instance to plain object
+    public toJSON() {
+        return {
+            uuid: this.uuid,
+            universe: this.universe.toJSON(),
+            terrain: this.terrain.toJSON(),
+            entities: Array.from(this.entities.entries()).map(([key, value]) => [key,  ESSerializer.serialize(value)])
+        };
+    }
+
+    // Static method to create a class instance from a plain object
+    public static fromJSON(json: any): World {
+        const universe = Universe.fromJSON(json.universe);
+        const terrain = Terrain.fromJSON(json.terrain);
+        const world = new World({ universe, uuid: json.uuid });
+        world.terrain = terrain;
+        if (json.entities.forEach) {
+            json.entities.forEach(([key, value]: [string, any]) => {
+                const entity = ESSerializer.deserialize(value, [LivingEntity, Aves]);
+                world.entities.set(key, entity);
+            });
+        }
+        return world;
     }
 }
 class Forge {
@@ -88,10 +160,10 @@ class Hourglass {
         this.callback && this.callback();
 
         this.world.entities.forEach((entity) => {
-            console.log('entity', entity.id);
+            entity.tick();
         });
         
-        setTimeout(this.tick.bind(this), 60);
+        setTimeout(this.tick.bind(this), 200);
     }
 
 }
@@ -152,7 +224,9 @@ class HourglassBuilder {
         this.world = new World({ universe: new Universe() });
     }
     public goesBy(): Hourglass {
-        return new Hourglass({ world: this.world });
+        const time = new Hourglass({ world: this.world });
+        this.world.time(time)
+        return time;
     }
     public onEarth(world?: World): HourglassBuilder {
         this.world = world || this.world || new World({ universe: new Universe() });

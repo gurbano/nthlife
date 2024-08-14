@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "actionhero": "29.3.0",
+    "esserializer": "^1.3.11",
     "ioredis": "latest",
     "ioredis-mock": "latest",
     "uuid": "^9.0.1",

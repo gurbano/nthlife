@@ -22,7 +22,7 @@ export class Mammalia extends Chordata implements IMammalia {
     order: EOrderMammalia;
 
     constructor({order}: {order: EOrderMammalia}) {
-        super({clazz: EClassChordata.Mammalia});
+        super({classe: EClassChordata.Mammalia});
         this.order =  order;
     }
 }
